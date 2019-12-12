@@ -41,19 +41,19 @@ class adminController extends Controller
 		$data['email_pemohon'] = $email_pemohon;
 		
         if($pesan[0]->status==1){
-			Mail::send('mail.terima', ['data' => $data], function($message) use($data){
-				$message->from('laboratoriumpemrograman2@gmail.com','LP2');
-				$message->subject('Reservasi Laboratorium Pemrograman 2');
-				$message->to($data['email_pemohon']);
-			});
+//			Mail::send('mail.terima', ['data' => $data], function($message) use($data){
+//				$message->from('laboratoriumpemrograman2@gmail.com','LP2');
+//				$message->subject('Reservasi Laboratorium Pemrograman 2');
+//				$message->to($data['email_pemohon']);
+//			});
 			return redirect()->back();
 		}
         else{
-			Mail::send('mail.tolak', ['data' => $data], function($message) use($data){
-				$message->from('laboratoriumpemrograman2@gmail.com','LP2');
-				$message->subject('Reservasi Laboratorium Pemrograman 2');
-				$message->to($data['email_pemohon']);
-			});
+//			Mail::send('mail.tolak', ['data' => $data], function($message) use($data){
+//				$message->from('laboratoriumpemrograman2@gmail.com','LP2');
+//				$message->subject('Reservasi Laboratorium Pemrograman 2');
+//				$message->to($data['email_pemohon']);
+//			});
 			
             session::flash('msg', $pesan[0]->pesan);
             return redirect()->back();

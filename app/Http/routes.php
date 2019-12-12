@@ -51,6 +51,8 @@ Route::post('/isiPinjam', 'umumController@isiPinjam');
 Route::get('/feeder/{ruang}', 'umumController@feeding');
 Route::get('/feed/{ruang}','umumController@feed');
 Route::get('/pemohon/{nama}', 'umumController@autocom');
+Route::get('/reservasi-pengguna/{uid}', 'umumController@cekReservasiPengguna');
+
 
 //API
 Route::post('/api/diagonalley/acc', 'apiController@acc');

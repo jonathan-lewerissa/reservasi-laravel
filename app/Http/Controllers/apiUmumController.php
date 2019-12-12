@@ -32,23 +32,6 @@ class umumController extends Controller
         $pengisian = DB::select('call isiPermohonan(?,?,?, ?,?,?, ?,?,?)', array($request['nama'],$request['keg'], $request['tglmulai'], $request['wktmulai'], $request['wktselesai'], $request['badan'], $request['ruang'], $request['rutin'], $request['kali']));
 
         if($pengisian[0]->pesan==1){
-			// $channelAccess = 'viTsIX/XPsNQdX8hY2Nas58HseBFBYiHa5f1kyRtUCdHdft/i/zRSOODshsgOqjRROcfNx15OlyjApd4cf1S8Y9NDmn0R0O5tBlWFHPpJgzTPmJZiLjjyg1ShheifdPp669biMwR+vn0EmVjV+lugwdB04t89/1O/w1cDnyilFU=';
-			// $channelSecret = '2d26f9f473a796e0ece965f5e0445f87';
-			// $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($channelAccess);
-			// $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $channelSecret]);
-            // // $groupId = 'C569ee66b2342844bb441cf82ae2d75b7'; //dari bot /admin/getid
-            // $message = 'Permintaan peminjaman dari '.$request['nama'].
-            //     "\nKegiatan : ".$request['keg'].
-            //     "\nTanggal   : ".$request['tglmulai'].
-            //     "\nMulai       : ".$request['wktmulai'].
-			// 	"\nGunakan link berikut untuk memproses permintaan:\n".
-			// 	"http://reservasi.lp2.if.its.ac.id/admin/accruangan";
-            // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
-            // $response = $bot->pushMessage($groupId, $textMessageBuilder);
-			// $kodePermohononan = $pengisian[0]->Kode_Pemesanan;
-			// $newMessage = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder("/admin/acc ".$kodePermohononan." [username]");
-			// $newResponse = $bot->pushMessage($groupId, $newMessage);
-			//dd($response, $newResponse);
             session::flash('msg', 'Permohonan telah diterima silahakan menghubungi Administrator lab. Kode permohonan anda '.$pengisian[0]->Kode_Pemesanan);
             return redirect()->back();
         }
@@ -63,7 +46,7 @@ class umumController extends Controller
         return response()->json(['data'=>$data]);
     }
     function cekRuangan($ruangan, $tanggal){
-        $kegiatan = DB::select('call lihatKegiatanBulanan(?,?)', array($ruangan, $tanggal));
+        $kegiatan = DB::select('call lihatKegiatan(?,?)', array($ruangan, $tanggal));
         return response()->json(['kegiatan'=>$kegiatan]);
     }
     function feed($ruang){
@@ -92,10 +75,5 @@ class umumController extends Controller
 		]];
         $menit = DB::select('SELECT MINUTE(CURTIME()) AS "menit";');
         return response()->json(['now'=>$now, 'next'=>$next, 'ruang'=>$ruang, 'jam'=>$jam, 'menit'=>$menit]);
-    }
-
-    function cekReservasiPengguna($uid) {
-        $listPermohonan = DB::select('SELECT * FROM daftar_permohonan where nama_pemohon_peminjaman in (select pemohon.nama_pemohon from pemohon where pemohon.email_pemohon = ?) ORDER BY tanggal_masuk_permohonan ASC;', array($uid));
-        return response()->json(['permohonan' => $listPermohonan]);
     }
 }
